@@ -27,7 +27,24 @@ angular.module('app.controllers', [])
     $scope.searchTextChanged = function(){
             $ionicScrollDelegate.$getByHandle('mainScroll').scrollTop(true);
         }
-
+    $scope.doRefresh = function(){
+            $http.get("http://192.168.15.5/wordpress43/?json=get_posts").then(function(retdata){
+        
+        $scope.recent_posts =retdata.data.posts;  
+        
+        $scope.recent_posts.forEach(function(element,index,array){
+                
+                element.excerpt = element.excerpt.substr(0,100);
+                element.excerpt = element.excerpt +" Ler +";
+                element.excerpt = $sce.trustAsHtml(element.excerpt);
+            });
+        
+        $scope.$broadcast('scroll.refreshComplete');
+        
+        },function(err){
+            console.log(err);
+            });
+        }
 })
    
 .controller('categoriasCtrl', function($scope,$http,$sce) {
