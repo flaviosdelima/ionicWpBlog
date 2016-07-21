@@ -4,7 +4,7 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('postagensRecentesCtrl', function($scope,$http,$sce) {
+.controller('postagensRecentesCtrl', function($scope,$http,$sce,$ionicScrollDelegate) {
     
     $scope.recent_posts = [];    
     $http.get("http://192.168.15.5/wordpress43/?json=get_posts").then(function(retdata){
@@ -23,6 +23,10 @@ angular.module('app.controllers', [])
         },function(err){
             console.log(err);
             });
+    
+    $scope.searchTextChanged = function(){
+            $ionicScrollDelegate.$getByHandle('mainScroll').scrollTop(true);
+        }
 
 })
    
