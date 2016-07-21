@@ -1,18 +1,12 @@
 <ion-view style="" class=" " id="page3" title="Categorias">
     <ion-content class="has-header" padding="true">
-        <ion-list class=" " id="categorias-list1">
-            <ion-item style="" id="categorias-list-item4">
-                <span>Nome Categoria</span>
-                <span class="badge badge-assertive">12</span>
+        <ion-list id="categorias-list1">
+            
+            <ion-item style="" ng-repeat="category in categories" id="categorias-list-item4">
+                <span>{{category.title}}</span>
+                <span class="badge badge-assertive">{{category.post_count}}</span>
             </ion-item>
-            <ion-item style="" id="categorias-list-item5">
-                            <span>Nome Categoria</span>
-                <span class="badge badge-assertive">12</span>
-            </ion-item>
-            <ion-item style="" id="categorias-list-item6">
-                            <span>Nome Categoria</span>
-                <span class="badge badge-assertive">12</span>
-            </ion-item>
+ 
         </ion-list>
     </ion-content>
 </ion-view>
