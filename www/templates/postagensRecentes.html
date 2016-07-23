@@ -26,8 +26,10 @@
             pulling-text="Carregar novamente"
             on-refresh="doRefresh()"></ion-refresher>
         <ion-list can-swipe="true" option-buttons="itemButtons">
-            <ion-item class="item item-thumbnail-left item-text-wrap item-icon-right" ng-repeat="post in recent_posts | filter: searchText"><!-- filter: {title:searchText} -->
-                <img src="{{post.thumbnail}}"/>
+            <ion-item class="item item-thumbnail-left item-text-wrap item-icon-right" 
+            ng-repeat="post in recent_posts | filter: searchText"
+            href="#/side-menu21/postDetail/{{post.id}}" ><!-- filter: {title:searchText} -->
+                <img ng-src="{{post.thumbnail}}"/>
                 <h2>{{post.title}}</h2>
                 <p ng-bind-html="post.excerpt"></p>
  
@@ -36,6 +38,12 @@
                 </ion-option-button>
             </ion-item>
         </ion-list>
+ 
+  <ion-infinite-scroll
+    on-infinite="loadMorePosts()"
+    ng-if="canLoadMore()"
+    distance="1%">
+  </ion-infinite-scroll>      
     </ion-content>
     
 </ion-view>

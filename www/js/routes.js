@@ -39,6 +39,16 @@ angular.module('app.routes', [])
       }
     }
   })
+  
+  .state('menu.postDetail', {
+    url: '/postDetail/:postId',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/postDetail.html',
+        controller: 'postDetailCtrl'
+      }
+    }
+  })  
 
   .state('menu', {
     url: '/side-menu21',
