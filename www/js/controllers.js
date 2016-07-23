@@ -185,3 +185,41 @@ angular
 					
 					
 				})
+		.controller(
+				'catCtrl',
+				function($scope, $http, $sce,$stateParams) {
+					
+					$scope.doRefresh = function()
+					{
+					$http
+					.get(
+							"http://192.168.15.5/wordpress43/?json=get_category_posts&id=" + $stateParams.catId)
+					.then(
+							function(retdata) {
+
+								$scope.category_posts = retdata.data.posts;
+								$scope.count_total = retdata.data.count_total;
+								$scope.category_posts
+										.forEach(function(element,
+												index, array) {
+
+											element.excerpt = element.excerpt
+													.substr(0, 100);
+											element.excerpt = element.excerpt
+													+ " Ler +";
+											element.excerpt = $sce
+													.trustAsHtml(element.excerpt);
+										});
+								$scope.category_title = retdata.data.category.title;
+								$scope.$broadcast('scroll.refreshComplete');
+								console.log(retdata);
+
+							}, function(err) {
+								console.log(err);
+							});
+				}
+					$scope.doRefresh();
+					
+				})
+				
+				

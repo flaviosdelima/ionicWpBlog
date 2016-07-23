@@ -49,7 +49,15 @@ angular.module('app.routes', [])
       }
     }
   })  
-
+  .state('menu.contentByCategory', {
+    url: '/contentByCategory/:catId',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/contentByCategory.html',
+        controller: 'catCtrl'
+      }
+    }
+  })  
   .state('menu', {
     url: '/side-menu21',
     templateUrl: 'templates/menu.html',
