@@ -12,6 +12,10 @@ angular
 					$scope.recent_posts = [];
 					$scope.offset = 0;
 					$scope.count_total = 1;
+					
+					if(!$scope.Favorites)
+						$scope.Favorites = [];
+					
 					$http
 							.get(
 									"http://192.168.15.5/wordpress43/?json=get_posts")
@@ -122,6 +126,26 @@ angular
 					$scope.canLoadMore = function() {
 
 						return true;
+					};
+					
+					$scope.toggleFavorite = function (post) {
+						console.log("Elemento toogle ");
+						post.isFavorite =!post.isFavorite;
+						
+						if(post.isFavorite==true)
+						{
+							$scope.Favorites.push(post.id);
+						}
+						else
+							{
+								$scope.Favorites.forEach(function(e,i,a){
+									if(e == post.id)
+										{
+										$scope.Favorites.splice(i,1);
+										console.log("Elemento spliced "+i);
+										}
+								});
+							}
 					}
 
 				})
