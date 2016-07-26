@@ -7,15 +7,16 @@ angular
 
 		.controller(
 				'postagensRecentesCtrl',
-				function($scope, $http, $sce, $ionicScrollDelegate) {
+				function($scope, $http, $sce, $ionicScrollDelegate,$window) {
 					console.log("carregamento incial");
 					$scope.recent_posts = [];
 					$scope.offset = 0;
 					$scope.count_total = 1;
 					
-					if(!$scope.Favorites)
-						$scope.Favorites = [];
+					$scope.Favorites = $window.localStorage.Favorites;
 					
+					if(!$scope.Favorites)
+						$scope.Favorites = []; 
 					$http
 							.get(
 									"http://192.168.15.5/wordpress43/?json=get_posts")
@@ -66,6 +67,14 @@ angular
 																+ " Ler +";
 														element.excerpt = $sce
 																.trustAsHtml(element.excerpt);
+														
+														if($scope.Favorites.indexOf(element.id)!=-1)
+															{
+															element.isFavorite = true;
+															}
+														else
+															element.isFavorite = false;
+														
 													});
 
 											$scope
@@ -146,6 +155,7 @@ angular
 										}
 								});
 							}
+						$window.localStorage.Favorites = $scope.Favorites;
 					}
 
 				})
@@ -245,5 +255,77 @@ angular
 					$scope.doRefresh();
 					
 				})
-				
+		.controller(
+				'favCtrl',
+				function($scope, $http, $sce, $ionicScrollDelegate,$window) {
+ 
+                    //$scope.Favorites = $window.localStorage.Favorites;
+					$scope.doRefresh = function()
+					{
+                        $scope.Favorites = [$window.localStorage.Favorites];
+						//$scope.Favorites = $window.localStorage.Favorites;
+                        console.log($scope.Favorites);
+						$scope.favorite_posts = [];
+						$scope.Favorites
+						.forEach(function(element,
+								index, array) { 							
+							$http
+							.get(
+									"http://192.168.15.5/wordpress43/?json=get_post&id=" + element)
+							.success(
+									function(retdata) {
+										$scope.favorite_posts.push(retdata.post);
+
+										if($scope.favorite_posts.length == $scope.Favorites.length)
+										{
+											$scope.favorite_posts.forEach(function(post,position,list){
+                                                
+												post.excerpt = post.excerpt.substr(0, 100);
+												post.excerpt = post.excerpt+ " Ler +";
+												post.excerpt = $sce.trustAsHtml(post.excerpt);
+ 
+                                            
+												if($scope.Favorites.indexOf(post.id)!=-1)
+												{
+													post.isFavorite = true;
+												}
+											else
+												post.isFavorite = false;
+												
+											});
+										}
+										
+										console.log(retdata);
+
+									}).finally( function() {
+										$scope.$broadcast('scroll.refreshComplete');
+									});							
+							
+							
+						});
+ 
+				}
+					$scope.doRefresh();
+					
+					$scope.toggleFavorite = function (post) {
+						console.log("Elemento toogle ");
+						post.isFavorite =!post.isFavorite;
+						
+						if(post.isFavorite==true)
+						{
+							$scope.Favorites.push(post.id);
+						}
+						else
+							{
+								$scope.Favorites.forEach(function(e,i,a){
+									if(e == post.id)
+										{
+										$scope.Favorites.splice(i,1);
+										console.log("Elemento spliced "+i);
+										}
+								});
+							}
+						$window.localStorage.Favorites = $scope.Favorites;
+					}
+				})				
 				

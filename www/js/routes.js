@@ -49,6 +49,15 @@ angular.module('app.routes', [])
       }
     }
   })  
+  .state('menu.favorites', {
+    url: '/favorites',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/favorites.html',
+        controller: 'favCtrl'
+      }
+    }
+  })  
   .state('menu.contentByCategory', {
     url: '/contentByCategory/:catId',
     views: {

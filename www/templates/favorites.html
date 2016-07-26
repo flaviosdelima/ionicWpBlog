@@ -1,19 +1,23 @@
 
 <ion-view>
-    <ion-nav-bar class="bar-assertive">
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
-        </ion-nav-buttons>
-        <ion-nav-buttons side="right">
-            <button class="button button-icon button-clear ion-heart" ui-sref="menu.favorites"></button>
-        </ion-nav-buttons>        
-        
-    </ion-nav-bar>
+	<ion-nav-bar class="bar-royal">
+		<ion-nav-back-button class="button-icon button-clear">
+		    <i class="ion-arrow-left-c"></i>Back
+		<ion-nav-back-button>
+
+		<ion-nav-buttons side="left">
+		    <button id="menu-left" menu-toggle="left" class="button button-icon icon ion-navicon"></button> 
+		</ion-nav-buttons >
+
+		<ion-nav-buttons side="right">
+		    <button id="menu-right" menu-toggle="right" class="button button-icon icon ion-navicon"></button> 
+		</ion-nav-buttons>
+	</ion-nav-bar>
     
     <ion-header-bar class="bar bar-assertive">
-        <div class="title"><center>Ultimas Postagens</center></div>
+        <div class="title"><center>Postagens Favoritas</center></div>
     </ion-header-bar>
-    
+    </ion-nav-bar>
     <div class="bar bar-subheader item-input-inset">
         <label class="item-input-inset">
             <i class="icon ion-ios-search placeholder-icon"></i>
@@ -27,7 +31,7 @@
             on-refresh="doRefresh()"></ion-refresher>
         <ion-list can-swipe="true" option-buttons="itemButtons">
             <ion-item class="item item-thumbnail-left item-text-wrap item-icon-right" 
-            ng-repeat="post in recent_posts | filter: searchText"
+            ng-repeat="post in favorite_posts | filter: searchText"
             href="#/side-menu21/postDetail/{{post.id}}" ><!-- filter: {title:searchText} -->
                 <img ng-src="{{post.thumbnail}}"/>
                 <h2>{{post.title}}</h2>
