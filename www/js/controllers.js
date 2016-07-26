@@ -14,12 +14,12 @@ angular
 					$scope.count_total = 1;
 					
 					$scope.Favorites = $window.localStorage.Favorites;
-					
+					console.log($window.localStorage.Favorites);
 					if(!$scope.Favorites)
 						$scope.Favorites = []; 
 					$http
 							.get(
-									"http://192.168.15.5/wordpress43/?json=get_posts")
+									"http://192.168.25.10//wordpress43/?json=get_posts")
 							.then(
 									function(retdata) {
 
@@ -35,7 +35,15 @@ angular
 															+ " Ler +";
 													element.excerpt = $sce
 															.trustAsHtml(element.excerpt);
+
+												if($scope.Favorites.indexOf(element.id)!=-1)
+												{
+													element.isFavorite = true;
+												}
+											else
+												element.isFavorite = false;
 												});
+                                                
 
 										console.log(retdata);
 
@@ -51,7 +59,7 @@ angular
 						console.log("fiz refresh");
 						$http
 								.get(
-										"http://192.168.15.5/wordpress43/?json=get_posts")
+										"http://192.168.25.10//wordpress43/?json=get_posts")
 								.then(
 										function(retdata) {
 
@@ -96,7 +104,7 @@ angular
 							$scope.lastTimer = new Date().getTime();
 							$http
 									.get(
-											"http://192.168.15.5/wordpress43/?json=get_posts&offset="
+											"http://192.168.25.10//wordpress43/?json=get_posts&offset="
 													+ $scope.offset)
 									.then(
 											function(retdata) {
@@ -166,7 +174,7 @@ angular
 					$scope.categories = [];
 					$http
 							.get(
-									"http://192.168.15.5/wordpress43/?json=get_category_index")
+									"http://192.168.25.10//wordpress43/?json=get_category_index")
 							.then(
 									function(retdata) {
 										// sucess
@@ -191,7 +199,7 @@ angular
 					
 					$http
 					.get(
-							"http://192.168.15.5/wordpress43/?json=get_post&id=" + $stateParams.postId)
+							"http://192.168.25.10//wordpress43/?json=get_post&id=" + $stateParams.postId)
 					.then(
 							function(retdata) {
 								// sucess
@@ -217,6 +225,9 @@ angular
 								console.log(error);
 							});
 					
+                    $scope.Share = function(){
+                            window.plugins.socialsharing.share($scope.post_title,$scope.post_title,$scope.post_image,$scope.post_url);
+                        };
 					
 				})
 		.controller(
@@ -227,7 +238,7 @@ angular
 					{
 					$http
 					.get(
-							"http://192.168.15.5/wordpress43/?json=get_category_posts&id=" + $stateParams.catId)
+							"http://192.168.25.10//wordpress43/?json=get_category_posts&id=" + $stateParams.catId)
 					.then(
 							function(retdata) {
 
@@ -262,7 +273,10 @@ angular
                     //$scope.Favorites = $window.localStorage.Favorites;
 					$scope.doRefresh = function()
 					{
-                        $scope.Favorites = [$window.localStorage.Favorites];
+                        var array = $window.localStorage.Favorites.split(',');
+                        console.log(array);
+                        $scope.Favorites = array;
+                        //$scope.Favorites = [$window.localStorage.Favorites];
 						//$scope.Favorites = $window.localStorage.Favorites;
                         console.log($scope.Favorites);
 						$scope.favorite_posts = [];
@@ -271,7 +285,7 @@ angular
 								index, array) { 							
 							$http
 							.get(
-									"http://192.168.15.5/wordpress43/?json=get_post&id=" + element)
+									"http://192.168.25.10//wordpress43/?json=get_post&id=" + element)
 							.success(
 									function(retdata) {
 										$scope.favorite_posts.push(retdata.post);
